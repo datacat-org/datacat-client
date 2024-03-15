@@ -1,9 +1,11 @@
 "use client";
 import BlurCircles from "@/components/BlurCircles";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 import { FaArrowRight } from "react-icons/fa";
 
 export default function Home() {
+  const router = useRouter();
   return (
     <>
       <main className="flex min-h-screen flex-col items-center justify-center p-24 ">
@@ -12,7 +14,7 @@ export default function Home() {
         <Button
           variant={"default"}
           onClick={() => {
-            console.log("Button clicked");
+            router.push("/verify");
           }}
         >
           Get Started
