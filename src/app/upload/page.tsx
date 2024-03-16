@@ -12,6 +12,7 @@ export default function UploadDataset() {
   const filesArray = useFilesStore((state: any) => state.filesArray);
   const nameRef = useRef<HTMLInputElement>(null);
   const priceRef = useRef<HTMLInputElement>(null);
+  const labelsCsvRef = useRef<HTMLInputElement>(null);
   const toast = useToast();
 
   const handleUploadDataset = async () => {
@@ -19,6 +20,7 @@ export default function UploadDataset() {
       name: nameRef.current?.value,
       price: priceRef.current?.value,
       files: filesArray,
+      labels: labelsCsvRef.current?.value,
     });
 
     console.log("res from upload dataset", res);
@@ -53,6 +55,12 @@ export default function UploadDataset() {
         placeholder="Enter price(optional)"
         className="my-4 w-[400px]"
         ref={priceRef}
+      />
+      <Input
+        type="text"
+        placeholder="Enter labels csv"
+        className="my-4 w-[400px]"
+        ref={labelsCsvRef}
       />
       <DragAndDrop />
       <Button className="mt-4 w-[400px]" onClick={handleUploadDataset}>
