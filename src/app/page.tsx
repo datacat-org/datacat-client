@@ -20,8 +20,8 @@ export default function Home() {
   return (
     <>
       <main className="flex min-h-screen flex-col items-center justify-center p-24 ">
-        <h1 className="text-6xl font-bold mb-4">DataCat says meow</h1>
-        <h2 className="mb-4">Label data, get paid. Cheers.</h2>
+        <h1 className="text-6xl font-bold mb-6">Welcome to DataCat.</h1>
+        <h2 className="mb-8 font-medium">Label data, get paid. Cheers.</h2>
         <div className="flex space-x-4 mb-4">
           <Button
             variant={"default"}
