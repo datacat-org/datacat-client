@@ -52,7 +52,7 @@ export default function DataCard({ type }: DataCardProps) {
             <>
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button variant="default">Buy</Button>
+                  <Button variant="outline">Buy</Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[425px]">
                   <DialogHeader>
@@ -93,7 +93,7 @@ export default function DataCard({ type }: DataCardProps) {
           ) : (
             <>
               <Button
-                variant="default"
+                variant="outline"
                 onClick={() => {
                   router.push(`dataset/141`);
                 }}

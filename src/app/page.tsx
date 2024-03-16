@@ -32,7 +32,7 @@ export default function Home() {
           <Button
             variant={"outline"}
             onClick={() => {
-              router.push("/login");
+              router.push("/marketplace");
             }}
           >
             I'm here to buy data <FaArrowRight className="ml-2" />
