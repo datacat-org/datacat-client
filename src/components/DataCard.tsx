@@ -28,6 +28,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
+import { useDynamicContext } from "@/lib/dynamic";
+import { useToast } from "@chakra-ui/react";
+import { buyDataset } from "@/services/consumers";
 
 interface DataCardProps {
   type: string;
@@ -35,6 +38,25 @@ interface DataCardProps {
 
 export default function DataCard({ type }: DataCardProps) {
   const router = useRouter();
+  const { user } = useDynamicContext();
+  const toast = useToast();
+  const handleBuyDataset = async () => {
+    if (user) {
+      console.log("Buying dataset");
+      const res = await buyDataset({
+        dataset_id: 141,
+        wallet_address: user.verifiedCredentials[0].address,
+      });
+      console.log("res from buy dataset", res);
+    } else {
+      toast({
+        title: "Please connect your wallet",
+        status: "info",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
   return (
     <>
       <Card className="min-w-[300px] my-5 mr-4 bg-transparent">
@@ -50,45 +72,9 @@ export default function DataCard({ type }: DataCardProps) {
           {type === "buyer" && <Label htmlFor="price">Price: $3000</Label>}
           {type === "buyer" ? (
             <>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button variant="outline">Buy</Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
-                  <DialogHeader>
-                    <DialogTitle>Buy</DialogTitle>
-                    <DialogDescription>
-                      Make changes to your profile here. Click save when you're
-                      done.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="grid gap-4 py-4">
-                    <div className="grid grid-cols-4 items-center gap-4">
-                      <Label htmlFor="name" className="text-right">
-                        Name
-                      </Label>
-                      <Input
-                        id="name"
-                        value="Pedro Duarte"
-                        className="col-span-3"
-                      />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                      <Label htmlFor="username" className="text-right">
-                        Username
-                      </Label>
-                      <Input
-                        id="username"
-                        value="@peduarte"
-                        className="col-span-3"
-                      />
-                    </div>
-                  </div>
-                  <DialogFooter>
-                    <Button type="submit">Save changes</Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
+              <Button variant="outline" onClick={handleBuyDataset}>
+                Buy
+              </Button>
             </>
           ) : (
             <>
