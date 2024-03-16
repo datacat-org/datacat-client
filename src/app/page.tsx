@@ -6,7 +6,7 @@ import {
   DynamicContextProvider,
   DynamicWidget,
   useDynamicContext,
-} from "@dynamic-labs/sdk-react-core";
+} from "@dynamic-labs/sdk-react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { FaArrowRight } from "react-icons/fa";
