@@ -1,8 +1,9 @@
 import axios from "axios";
+import { headers } from "next/headers";
 
 export const fetchDatasetsForAnnotation = async () => {
   const res = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/datases?status=PENDING`
+    `${process.env.NEXT_PUBLIC_API_URL}/dataset?status=PENDING`
   );
   return res;
 };
@@ -35,6 +36,9 @@ export const reviewRecord = async (body: any) => {
 export const createDataset = async (body: any) => {
   const res = await axios.post(
     `${process.env.NEXT_PUBLIC_API_URL}/dataset`,
+    {
+      "Content-Type": "multipart/form-data",
+    },
     body
   );
   return res;

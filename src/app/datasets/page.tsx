@@ -4,14 +4,17 @@ import ConnectWallet from "@/components/ConnectWallet";
 import DataCard from "@/components/DataCard";
 import Hero from "@/components/Hero";
 import { Button } from "@/components/ui/button";
-import { fetchDatasetsForMarketplace } from "@/services/datasets";
+import {
+  fetchDatasetsForAnnotation,
+  fetchDatasetsForMarketplace,
+} from "@/services/datasets";
 import { useEffect, useState } from "react";
 import MarketplaceSet from "@/types/marketplaceSet";
 
 export default function MoreDatasets() {
   const [datasets, setDatasets] = useState([]);
   const handleFetchDatasets = async () => {
-    const res = await fetchDatasetsForMarketplace();
+    const res = await fetchDatasetsForAnnotation();
     console.log("res from marketplace", res);
     if (res.status !== 200) return console.log("Error fetching datasets");
     setDatasets(res.data.data);

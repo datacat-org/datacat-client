@@ -1,17 +1,70 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import lighthouse from "@lighthouse-web3/sdk";
 import { Button } from "./ui/button";
+import { useFilesStore } from "@/states/filesStore";
 export default function DragAndDrop() {
+  const setFilesArray = useFilesStore((state: any) => state.setFilesArray);
+  const [files, setFiles] = useState<any>([]);
+
+  useEffect(() => {
+    setFilesArray(files);
+  }, [files]);
+
+  function convertFileToBuffer(file: any) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        resolve(event.target?.result);
+      };
+      reader.onerror = (error) => {
+        reject(error);
+      };
+      reader.readAsArrayBuffer(file);
+    });
+  }
+
+  const progressCallback = (progressData: any) => {
+    let percentageDone: any = 0;
+    console.log(percentageDone);
+  };
+
+  const uploadFile = async (fileBuffer: any) => {
+    const output = await lighthouse.uploadBuffer(
+      fileBuffer,
+      "82c6f69c.139d27ee3e0e410faeba981916563ef8"
+    );
+    console.log("File Status:", output);
+    /*
+      output:
+        data: {
+          Name: "filename.txt",
+          Size: 88000,
+          Hash: "QmWNmn2gr4ZihNPqaC5oTeePsHvFtkWNpjY3cD6Fd5am1w"
+        }
+      Note: Hash in response is CID.
+    */
+
+    console.log(
+      "Visit at https://gateway.lighthouse.storage/ipfs/" + output.data.Hash
+    );
+    return output.data.Hash;
+  };
+
   const [dragActive, setDragActive] = useState<boolean>(false);
   const inputRef = useRef<any>(null);
-  const [files, setFiles] = useState<any>([]);
-  function handleChange(e: any) {
+  async function handleChange(e: any) {
     e.preventDefault();
     console.log("File has been added");
     if (e.target.files && e.target.files[0]) {
       for (let i = 0; i < e.target.files["length"]; i++) {
-        setFiles((prevState: any) => [...prevState, e.target.files[i]]);
+        try {
+          const cid = await uploadFile(convertFileToBuffer(e.target.files[i]));
+          setFiles((prevState: any) => [...prevState, cid]);
+        } catch (error) {
+          console.error(error, "error from lh");
+        }
       }
     }
   }
@@ -30,7 +83,8 @@ export default function DragAndDrop() {
     setDragActive(false);
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       for (let i = 0; i < e.dataTransfer.files["length"]; i++) {
-        setFiles((prevState: any) => [...prevState, e.dataTransfer.files[i]]);
+        const cid = uploadFile(convertFileToBuffer(e.dataTransfer.files[i]));
+        setFiles((prevState: any) => [...prevState, cid]);
       }
     }
   }
@@ -65,7 +119,7 @@ export default function DragAndDrop() {
     inputRef.current.click();
   }
   return (
-    <div className="flex flex-col items-start justify-start h-screen min-w-[500px]">
+    <div className="flex flex-col items-start justify-start min-h-[200px] min-w-[500px]">
       <form
         className={`${
           dragActive
@@ -115,9 +169,9 @@ export default function DragAndDrop() {
               </li>
             ))}
           </ul>
-          <Button onClick={handleSubmitFile} variant="default">
+          {/* <Button onClick={handleSubmitFile} variant="default">
             Submit
-          </Button>
+          </Button> */}
         </div>
       )}
     </div>

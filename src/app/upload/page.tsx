@@ -1,11 +1,63 @@
+"use client";
 import BlurCircles from "@/components/BlurCircles";
 import DragAndDrop from "@/components/DragDrop";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { createDataset } from "@/services/datasets";
+import { useFilesStore } from "@/states/filesStore";
+import { useToast } from "@chakra-ui/toast";
+import { useRef } from "react";
 
 export default function UploadDataset() {
+  const filesArray = useFilesStore((state: any) => state.filesArray);
+  const nameRef = useRef<HTMLInputElement>(null);
+  const priceRef = useRef<HTMLInputElement>(null);
+  const toast = useToast();
+
+  const handleUploadDataset = async () => {
+    const res = await createDataset({
+      name: nameRef.current?.value,
+      price: priceRef.current?.value,
+      files: filesArray,
+    });
+
+    console.log("res from upload dataset", res);
+    if (res.status === 200) {
+      toast({
+        title: "Dataset uploaded",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    } else {
+      toast({
+        title: "Error uploading dataset",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+
   return (
     <div className="p-10 flex justify-center items-start flex-col min-w-[400px]">
       <h1 className="mb-3">Upload Dataset</h1>
+      <Input
+        type="text"
+        placeholder="Enter dataset name"
+        className="mt-4 w-[400px]"
+        ref={nameRef}
+      />
+      <Input
+        type="number"
+        placeholder="Enter price(optional)"
+        className="my-4 w-[400px]"
+        ref={priceRef}
+      />
       <DragAndDrop />
+      <Button className="mt-4 w-[400px]" onClick={handleUploadDataset}>
+        Upload
+      </Button>
       <BlurCircles />
     </div>
   );
