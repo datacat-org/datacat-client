@@ -34,16 +34,15 @@ export default function Home() {
           </Button>
           <Button
             variant={"outline"}
+            className="rounded-none"
             onClick={() => {
               setUserType("buyer");
               router.push("/marketplace");
             }}
           >
-            I'm here to buy data <FaArrowRight className="ml-2" />
+            I'm here to buy/upload dataset <FaArrowRight className="ml-2" />
           </Button>
         </div>
-
-        <BlurCircles />
       </main>
     </>
   );

@@ -65,7 +65,6 @@ export default function DashboardPage() {
     <div className="w-screen">
       <Hero />
       <ConnectWallet />
-      <BlurCircles />
       <div className="flex flex-col justify-around items-start mt-[100px] px-10 h-full">
         <PortfolioCard />
         <DatasetsCarousel />

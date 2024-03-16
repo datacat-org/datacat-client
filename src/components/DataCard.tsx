@@ -61,7 +61,7 @@ export default function DataCard({ type, props }: DataCardProps) {
   };
   return (
     <>
-      <Card className="min-w-[300px] max-w-[300px] my-5 mr-4 bg-transparent">
+      <Card className="min-w-[300px] max-w-[300px] my-5 mr-4 bg-transparent rounded-none">
         <CardHeader>
           <CardTitle>{props.name}</CardTitle>
         </CardHeader>
@@ -87,7 +87,7 @@ export default function DataCard({ type, props }: DataCardProps) {
               <Button
                 variant="outline"
                 onClick={() => {
-                  router.push(`dataset/141`);
+                  router.push(`dataset/${props._id}`);
                 }}
               >
                 Select

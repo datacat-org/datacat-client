@@ -66,6 +66,10 @@
   }
 }
 
+* {
+  font-family: "Space Grotesk", sans-serif;
+}
+
 @layer base {
   * {
     @apply border-border;

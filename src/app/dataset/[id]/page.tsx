@@ -3,13 +3,35 @@
 import { useParams } from "next/navigation";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Hero from "@/components/Hero";
 import ConnectWallet from "@/components/ConnectWallet";
+import { fetchRecordToAnnotate, reviewRecord } from "@/services/datasets";
 
 export default function DatasetPage(props: any) {
   const { id } = useParams();
   const [score, setScore] = useState(5);
+
+  const [record, setRecord] = useState({});
+
+  const handleFetchDataRecord = async () => {
+    const res = await fetchRecordToAnnotate({
+      dataset_id: "65f5f7f2a207075853c36dce",
+      annotator_id: "65f4f7b09ac3763d57b97702",
+    });
+    console.log("res from fetchRecordToAnnotate", res);
+  };
+
+  const handleReviewRecord = async () => {
+    console.log("Reviewing record");
+    const res = await reviewRecord({});
+    console.log("res from reviewRecord", res);
+  };
+
+  useEffect(() => {
+    handleFetchDataRecord();
+  }, []);
+
   return (
     <>
       <Hero />
@@ -33,7 +55,11 @@ export default function DatasetPage(props: any) {
               />
             </div>
             <div className="w-full flex flex-col justify-end items-start h-[45vh]">
-              <Button variant={"outline"} className="w-full">
+              <Button
+                variant={"outline"}
+                className="w-full"
+                onClick={handleReviewRecord}
+              >
                 Submit
               </Button>
               <Button variant={"link"} className="w-full">
@@ -41,7 +67,7 @@ export default function DatasetPage(props: any) {
               </Button>
             </div>
           </div>
-          <div className="w-[70%] flex items-center justify-center">
+          <div className="w-[70%] flex items-center justify-start">
             <iframe src="/a.pdf" className="h-[650px] w-[900px] rounded-sm" />
           </div>
         </div>

@@ -35,7 +35,10 @@ export default function ConnectWallet() {
 
   return (
     <div className="fixed top-5 right-10">
-      <DynamicWidget innerButtonComponent={<h1>Connect External Wallet</h1>} />
+      <DynamicWidget
+        innerButtonComponent={<h1>Connect External Wallet</h1>}
+        buttonClassName="rounded-none"
+      />
     </div>
   );
 }

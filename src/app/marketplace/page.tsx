@@ -7,8 +7,11 @@ import { Button } from "@/components/ui/button";
 import { fetchDatasetsForMarketplace } from "@/services/datasets";
 import { useEffect, useState } from "react";
 import MarketplaceSet from "@/types/marketplaceSet";
+import { FaPlus } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 export default function MarketplacePage() {
+  const router = useRouter();
   const [datasets, setDatasets] = useState([]);
   const handleFetchDatasets = async () => {
     const res = await fetchDatasetsForMarketplace();
@@ -29,7 +32,16 @@ export default function MarketplacePage() {
           <DataCard key={dataset._id} props={dataset} type="buyer" />
         ))}
       </div>
-      <BlurCircles />
+      <Button
+        variant="default"
+        className="fixed bottom-10 right-10"
+        onClick={() => {
+          router.push("/upload");
+        }}
+      >
+        Upload Dataset&nbsp;
+        <FaPlus />
+      </Button>
     </div>
   );
 }

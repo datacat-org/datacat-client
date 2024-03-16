@@ -15,7 +15,6 @@ export default function VerifyPage() {
         <FaArrowLeft className="mr-2" />
         Back
       </Button>
-      <BlurCircles />
     </div>
   );
 }

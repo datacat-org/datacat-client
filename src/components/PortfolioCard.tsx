@@ -31,7 +31,7 @@ import {
 export default function PortfolioCard() {
   return (
     <>
-      <Card className="min-w-[450px] h-fit pt-3">
+      <Card className="min-w-[450px] h-fit pt-3 rounded-none">
         <CardContent className="w-100 my-2">
           <StatGroup className="flex w-100 justify-around items-center">
             <Stat>

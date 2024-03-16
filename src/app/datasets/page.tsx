@@ -32,7 +32,6 @@ export default function MoreDatasets() {
           <DataCard key={dataset._id} props={dataset} type="labeller" />
         ))}
       </div>
-      <BlurCircles />
     </div>
   );
 }

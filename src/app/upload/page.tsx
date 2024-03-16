@@ -1,6 +1,8 @@
 "use client";
 import BlurCircles from "@/components/BlurCircles";
+import ConnectWallet from "@/components/ConnectWallet";
 import DragAndDrop from "@/components/DragDrop";
+import Hero from "@/components/Hero";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { createDataset } from "@/services/datasets";
@@ -21,6 +23,7 @@ export default function UploadDataset() {
       price: priceRef.current?.value,
       files: filesArray,
       labels: labelsCsvRef.current?.value,
+      creator_id: "65f5e21a0f15c853d05731fb",
     });
 
     console.log("res from upload dataset", res);
@@ -43,7 +46,9 @@ export default function UploadDataset() {
 
   return (
     <div className="p-10 flex justify-center items-start flex-col min-w-[400px]">
-      <h1 className="mb-3">Upload Dataset</h1>
+      <Hero />
+      <ConnectWallet />
+      <h1 className="mb-3 mt-20">Upload Dataset</h1>
       <Input
         type="text"
         placeholder="Enter dataset name"
@@ -66,7 +71,6 @@ export default function UploadDataset() {
       <Button className="mt-4 w-[400px]" onClick={handleUploadDataset}>
         Upload
       </Button>
-      <BlurCircles />
     </div>
   );
 }
