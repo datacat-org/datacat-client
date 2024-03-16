@@ -13,16 +13,23 @@ export default function ConnectWallet() {
   );
   const walletAddress = useWalletStore((state: any) => state.walletAddress);
   const userType = useUserStore((state: any) => state.userType);
+  const setId = useUserStore((state: any) => state.setId);
 
   const { user } = useDynamicContext();
 
   const handleCreateUser = async (addr: any) => {
     const checkRes = await checkIfUserExists({ address: addr });
-    if (checkRes.data.length > 0) return;
+    console.log("checkRes", checkRes);
+    if (checkRes.data.data._id) {
+      console.log("User exists", checkRes.data.data._id);
+      setId(checkRes.data.data._id);
+
+      return;
+    }
 
     if (userType === "buyer") return;
 
-    // router.push("/verify");
+    router.push("/verify");
   };
 
   useEffect(() => {

@@ -60,7 +60,8 @@ export default function DragAndDrop() {
     if (e.target.files && e.target.files[0]) {
       for (let i = 0; i < e.target.files["length"]; i++) {
         try {
-          const cid = await uploadFile(convertFileToBuffer(e.target.files[i]));
+          const res = await convertFileToBuffer(e.target.files[i]);
+          const cid = await uploadFile(res);
           setFiles((prevState: any) => [...prevState, cid]);
         } catch (error) {
           console.error(error, "error from lh");

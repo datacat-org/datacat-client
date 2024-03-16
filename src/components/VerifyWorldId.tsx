@@ -31,7 +31,7 @@ export default function VerifyWorldId() {
     console.log(data, res, "data");
     if (res.status === 200) {
       const res = await createUser({
-        nullifier_hash: data.nullifier_hash,
+        nullifier_hash: data.nullifier_hash ?? "abcd",
         wallet_address: walletAddress,
       });
       console.log("res from create user", res);
