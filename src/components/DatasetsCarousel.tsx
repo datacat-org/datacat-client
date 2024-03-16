@@ -1,4 +1,5 @@
-import * as React from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -9,8 +10,20 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import DataCard from "./DataCard";
+import { fetchDatasetsForMarketplace } from "@/services/datasets";
+import MarketplaceSet from "@/types/marketplaceSet";
 
 export function DatasetsCarousel() {
+  const [datasets, setDatasets] = useState([]);
+  const handleFetchDatasets = async () => {
+    const res = await fetchDatasetsForMarketplace();
+    console.log("res from marketplace", res);
+    if (res.status !== 200) return console.log("Error fetching datasets");
+    setDatasets(res.data.data);
+  };
+  useEffect(() => {
+    handleFetchDatasets();
+  }, []);
   return (
     <Carousel
       opts={{
@@ -19,8 +32,8 @@ export function DatasetsCarousel() {
       className="w-[75vw] ml-10"
     >
       <CarouselContent>
-        {Array.from({ length: 10 }).map((_, index) => (
-          <DataCard key={index} type="labeller" />
+        {datasets.map((dataset: MarketplaceSet) => (
+          <DataCard props={dataset} type="labeller" />
         ))}
       </CarouselContent>
       <CarouselPrevious />

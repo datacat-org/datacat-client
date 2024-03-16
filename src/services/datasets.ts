@@ -9,7 +9,7 @@ export const fetchDatasetsForAnnotation = async () => {
 
 export const fetchDatasetsForMarketplace = async () => {
   const res = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/datasets?status=REVIEWED`
+    `${process.env.NEXT_PUBLIC_API_URL}/dataset?status=REVIEWED`
   );
   return res;
 };

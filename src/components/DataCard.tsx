@@ -31,12 +31,14 @@ import { useRouter } from "next/navigation";
 import { useDynamicContext } from "@/lib/dynamic";
 import { useToast } from "@chakra-ui/react";
 import { buyDataset } from "@/services/consumers";
+import MarketplaceSet from "@/types/marketplaceSet";
 
 interface DataCardProps {
   type: string;
+  props: MarketplaceSet;
 }
 
-export default function DataCard({ type }: DataCardProps) {
+export default function DataCard({ type, props }: DataCardProps) {
   const router = useRouter();
   const { user } = useDynamicContext();
   const toast = useToast();
@@ -59,17 +61,21 @@ export default function DataCard({ type }: DataCardProps) {
   };
   return (
     <>
-      <Card className="min-w-[300px] my-5 mr-4 bg-transparent">
+      <Card className="min-w-[300px] max-w-[300px] my-5 mr-4 bg-transparent">
         <CardHeader>
-          <CardTitle>WEF Research</CardTitle>
-          <CardDescription>Stanford University, 2012</CardDescription>
+          <CardTitle>{props.name}</CardTitle>
         </CardHeader>
         <CardContent className="text-sm">
-          <span className="mb-5">No. of Labellers: 10</span> <br />
-          Diversity Score: 0.8 <br />
+          <span className="mb-5">
+            No. of Labellers: {props.times_annotated}
+          </span>{" "}
+          <br />
+          <span className="mb-5">Size: {props.nums_row} Rows</span>
         </CardContent>
         <CardFooter className="flex justify-between">
-          {type === "buyer" && <Label htmlFor="price">Price: $3000</Label>}
+          {type === "buyer" && (
+            <Label htmlFor="price">Price: ${props.price}</Label>
+          )}
           {type === "buyer" ? (
             <>
               <Button variant="outline" onClick={handleBuyDataset}>
