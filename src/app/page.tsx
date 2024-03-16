@@ -24,7 +24,7 @@ export default function Home() {
           <Button
             variant={"default"}
             onClick={() => {
-              router.push("/verify");
+              router.push("/dashboard");
             }}
           >
             I'm here to annotate <FaArrowRight className="ml-2" />
@@ -32,7 +32,7 @@ export default function Home() {
           <Button
             variant={"outline"}
             onClick={() => {
-              router.push("/marketplace");
+              router.push("/login");
             }}
           >
             I'm here to buy data <FaArrowRight className="ml-2" />

@@ -37,7 +37,7 @@ export default function DataCard({ type }: DataCardProps) {
   const router = useRouter();
   return (
     <>
-      <Card className="w-[300px] my-5 mr-4">
+      <Card className="min-w-[300px] my-5 mr-4 bg-transparent">
         <CardHeader>
           <CardTitle>WEF Research</CardTitle>
           <CardDescription>Stanford University, 2012</CardDescription>
