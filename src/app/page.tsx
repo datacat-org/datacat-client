@@ -13,25 +13,32 @@ import { FaArrowRight } from "react-icons/fa";
 import { SlSocialGoogle } from "react-icons/sl";
 
 export default function Home() {
-
   const router = useRouter();
-
 
   return (
     <>
       <main className="flex min-h-screen flex-col items-center justify-center p-24 ">
         <h1 className="text-6xl font-bold mb-4">Welcome to DataCat</h1>
         <h2 className="mb-4">Label data, get paid. Cheers.</h2>
-        <Button
-          variant={"default"}
-          className="mb-4"
-          onClick={() => {
-            router.push("/verify");
-          }}
-        >
-          Get Started
-          <FaArrowRight className="ml-2" />
-        </Button>
+        <div className="flex space-x-4 mb-4">
+          <Button
+            variant={"default"}
+            onClick={() => {
+              router.push("/verify");
+            }}
+          >
+            I'm here to annotate <FaArrowRight className="ml-2" />
+          </Button>
+          <Button
+            variant={"outline"}
+            onClick={() => {
+              router.push("/marketplace");
+            }}
+          >
+            I'm here to buy data <FaArrowRight className="ml-2" />
+          </Button>
+        </div>
+
         <BlurCircles />
       </main>
     </>
