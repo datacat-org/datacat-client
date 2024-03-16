@@ -34,7 +34,12 @@ export const reviewRecord = async (body: any) => {
 export const createDataset = async (body: any) => {
   const res = await axios.post(
     `${process.env.NEXT_PUBLIC_API_URL}/dataset`,
-    body
+    body,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
   );
   return res;
 };

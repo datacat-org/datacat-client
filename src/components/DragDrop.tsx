@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import lighthouse from "@lighthouse-web3/sdk";
 import { Button } from "./ui/button";
 import { useFilesStore } from "@/states/filesStore";
+import { uploadToLH } from "@/lib/uploadToLH";
 export default function DragAndDrop() {
   const setFilesArray = useFilesStore((state: any) => state.setFilesArray);
   const [files, setFiles] = useState<any>([]);
@@ -11,46 +12,6 @@ export default function DragAndDrop() {
   useEffect(() => {
     setFilesArray(files);
   }, [files]);
-
-  function convertFileToBuffer(file: any) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        resolve(event.target?.result);
-      };
-      reader.onerror = (error) => {
-        reject(error);
-      };
-      reader.readAsArrayBuffer(file);
-    });
-  }
-
-  const progressCallback = (progressData: any) => {
-    let percentageDone: any = 0;
-    console.log(percentageDone);
-  };
-
-  const uploadFile = async (fileBuffer: any) => {
-    const output = await lighthouse.uploadBuffer(
-      fileBuffer,
-      "82c6f69c.139d27ee3e0e410faeba981916563ef8"
-    );
-    console.log("File Status:", output);
-    /*
-      output:
-        data: {
-          Name: "filename.txt",
-          Size: 88000,
-          Hash: "QmWNmn2gr4ZihNPqaC5oTeePsHvFtkWNpjY3cD6Fd5am1w"
-        }
-      Note: Hash in response is CID.
-    */
-
-    console.log(
-      "Visit at https://gateway.lighthouse.storage/ipfs/" + output.data.Hash
-    );
-    return output.data.Hash;
-  };
 
   const [dragActive, setDragActive] = useState<boolean>(false);
   const inputRef = useRef<any>(null);
@@ -60,9 +21,7 @@ export default function DragAndDrop() {
     if (e.target.files && e.target.files[0]) {
       for (let i = 0; i < e.target.files["length"]; i++) {
         try {
-          const res = await convertFileToBuffer(e.target.files[i]);
-          const cid = await uploadFile(res);
-          setFiles((prevState: any) => [...prevState, cid]);
+          setFiles((prevState: any) => [...prevState, e.target.files[i]]);
         } catch (error) {
           console.error(error, "error from lh");
         }
@@ -70,11 +29,12 @@ export default function DragAndDrop() {
     }
   }
 
-  function handleSubmitFile(e: any) {
+  async function handleSubmitFile(e: any) {
     if (files.length === 0) {
-      // no file has been submitted
+      console.log("No files to upload");
     } else {
-      // write submit logic here
+      const res = await uploadToLH(files);
+      console.log("res from upload to lh", res.body.cidArray);
     }
   }
 
@@ -84,8 +44,7 @@ export default function DragAndDrop() {
     setDragActive(false);
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       for (let i = 0; i < e.dataTransfer.files["length"]; i++) {
-        const cid = uploadFile(convertFileToBuffer(e.dataTransfer.files[i]));
-        setFiles((prevState: any) => [...prevState, cid]);
+        setFiles((prevState: any) => [...prevState, e.dataTransfer.files[i]]);
       }
     }
   }
@@ -171,7 +130,7 @@ export default function DragAndDrop() {
             ))}
           </ul>
           {/* <Button onClick={handleSubmitFile} variant="default">
-            Submit
+            Upload Files
           </Button> */}
         </div>
       )}

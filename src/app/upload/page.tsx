@@ -18,13 +18,16 @@ export default function UploadDataset() {
   const toast = useToast();
 
   const handleUploadDataset = async () => {
-    const res = await createDataset({
-      name: nameRef.current?.value,
-      price: priceRef.current?.value,
-      files: filesArray,
-      labels: labelsCsvRef.current?.value,
-      creator_id: "65f5e21a0f15c853d05731fb",
+    //convert files array to form data
+    const formData = new FormData();
+    filesArray.forEach((file: any) => {
+      formData.append("files", file);
     });
+    formData.append("labels", "");
+    formData.append("creator_id", "65f5e21a0f15c853d05731fb");
+    formData.append("name", nameRef.current!.value.toString());
+
+    const res = await createDataset(formData);
 
     console.log("res from upload dataset", res);
     if (res.status === 200) {
