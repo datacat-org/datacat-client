@@ -1,5 +1,5 @@
 "use client";
-import { DynamicWidget, useDynamicContext } from "@dynamic-labs/sdk-react";
+import { DynamicWidget, useDynamicContext } from "@/lib/dynamic";
 
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -26,6 +26,7 @@ export default function LoginPage() {
       >
         LogIN
       </button>
+      <DynamicWidget />
     </div>
   );
 }
