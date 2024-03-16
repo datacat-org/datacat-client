@@ -1,3 +1,4 @@
+import BlurCircles from "@/components/BlurCircles";
 import DragAndDrop from "@/components/DragDrop";
 
 export default function UploadDataset() {
@@ -5,6 +6,7 @@ export default function UploadDataset() {
     <div className="p-10 flex justify-center items-start flex-col min-w-[400px]">
       <h1 className="mb-3">Upload Dataset</h1>
       <DragAndDrop />
+      <BlurCircles />
     </div>
   );
 }

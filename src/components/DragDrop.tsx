@@ -68,7 +68,9 @@ export default function DragAndDrop() {
     <div className="flex flex-col items-start justify-start h-screen min-w-[500px]">
       <form
         className={`${
-          dragActive ? "bg-blue-400" : "bg-blue-100"
+          dragActive
+            ? "bg-gray-400 border-2 border-dashed border-black-2"
+            : "bg-gray-100 border-2 border-dashed border-black-2"
         }  p-4 w-100 rounded-lg  min-h-[10rem] text-center flex flex-col items-center justify-center`}
         onDragEnter={handleDragEnter}
         onSubmit={(e) => e.preventDefault()}
@@ -89,7 +91,7 @@ export default function DragAndDrop() {
         <p>
           Drag & Drop files or{" "}
           <span
-            className="font-bold text-blue-600 cursor-pointer"
+            className="font-bold text-black-600 cursor-pointer"
             onClick={openFileExplorer}
           >
             <u>Select files</u>
