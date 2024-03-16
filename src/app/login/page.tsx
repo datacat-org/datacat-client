@@ -2,19 +2,16 @@
 import { DynamicWidget, useDynamicContext } from "@/lib/dynamic";
 
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { use, useEffect } from "react";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { user, setShowAuthFlow } = useDynamicContext();
 
-  //   useEffect(() => {
-  //     if (user) {
-  //       router.push("/dashboard");
-  //     } else {
-  //       setShowAuthFlow(true);
-  //     }
-  //   }, [user]);
+  const { user, setShowAuthFlow, sdkHasLoaded } = useDynamicContext();
+
+  useEffect(() => {
+    console.log("sdk", sdkHasLoaded);
+  }, []);
   return (
     <div>
       <h1>Login</h1>

@@ -17,7 +17,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <DynamicContextProvider
           settings={{
-            environmentId: "36878322-39ae-4a1e-8b42-71f475b32dc1",
+            environmentId: process.env.NEXT_PUBLIC_DYNAMIC_ENVIRONMENT_ID!,
           }}
         >
           {children}
