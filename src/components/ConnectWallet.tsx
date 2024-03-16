@@ -1,29 +1,35 @@
+"use client";
 import { DynamicWidget, useDynamicContext } from "@/lib/dynamic";
-import { createUser } from "@/services/users";
+import { checkIfUserExists, createUser } from "@/services/users";
+import { useUserStore } from "@/states/userStore";
 import { useWalletStore } from "@/states/walletStore";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function ConnectWallet() {
+  const router = useRouter();
   const setWalletAddress = useWalletStore(
     (state: any) => state.setWalletAddress
   );
   const walletAddress = useWalletStore((state: any) => state.walletAddress);
+  const userType = useUserStore((state: any) => state.userType);
 
   const { user } = useDynamicContext();
 
-  const handleCreateUser = async (user: any) => {
-    const res = await createUser({
-      nullifier_hash: "",
-      wallet_address: walletAddress,
-    });
-    console.log("res from create user", res);
+  const handleCreateUser = async (addr: any) => {
+    const checkRes = await checkIfUserExists({ address: addr });
+    if (checkRes.data.length > 0) return;
+
+    if (userType === "buyer") return;
+
+    // router.push("/verify");
   };
 
   useEffect(() => {
     if (user) {
       console.log("user", user);
       setWalletAddress(user.verifiedCredentials[0].address);
-      handleCreateUser(user);
+      handleCreateUser(user.verifiedCredentials[0].address);
     }
   }, [user]);
 

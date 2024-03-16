@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const createUser = async (body: any) => {
+export const createConsumer = async (body: any) => {
   const res = axios.post(
     `${process.env.NEXT_PUBLIC_API_URL}/economy/consumer`,
     body

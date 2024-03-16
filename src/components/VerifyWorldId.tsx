@@ -6,9 +6,14 @@ import {
 } from "@worldcoin/idkit";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
+import { createUser } from "@/services/users";
+import { useWalletStore } from "@/states/walletStore";
+import { useToast } from "@chakra-ui/react";
 
 export default function VerifyWorldId() {
   const router = useRouter();
+  const toast = useToast();
+  const walletAddress = useWalletStore((state: any) => state.walletAddress);
   const handleVerify = async (proof: ISuccessResult) => {
     console.log(proof, "proof");
     const res = await fetch("/api/verify", {
@@ -25,6 +30,28 @@ export default function VerifyWorldId() {
     const data = await res.json();
     console.log(data, res, "data");
     if (res.status === 200) {
+      const res = await createUser({
+        nullifier_hash: data.nullifier_hash,
+        wallet_address: walletAddress,
+      });
+      console.log("res from create user", res);
+      if (res.status === 200) {
+        console.log("User created successfully");
+        toast({
+          title: "User created successfully",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+      } else {
+        console.log("Verification failed");
+        toast({
+          title: "User creation failed",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
       console.log("Verification successful");
       router.push("/datasets");
     }

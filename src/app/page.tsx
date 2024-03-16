@@ -1,6 +1,7 @@
 "use client";
 import BlurCircles from "@/components/BlurCircles";
 import { Button } from "@/components/ui/button";
+import { useUserStore } from "@/states/userStore";
 
 import {
   DynamicContextProvider,
@@ -14,6 +15,7 @@ import { SlSocialGoogle } from "react-icons/sl";
 
 export default function Home() {
   const router = useRouter();
+  const setUserType = useUserStore((state: any) => state.setUserType);
 
   return (
     <>
@@ -24,6 +26,7 @@ export default function Home() {
           <Button
             variant={"default"}
             onClick={() => {
+              setUserType("labeller");
               router.push("/dashboard");
             }}
           >
@@ -32,6 +35,7 @@ export default function Home() {
           <Button
             variant={"outline"}
             onClick={() => {
+              setUserType("buyer");
               router.push("/marketplace");
             }}
           >
