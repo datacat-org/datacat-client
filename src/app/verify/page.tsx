@@ -1,4 +1,5 @@
 "use client";
+import BlurCircles from "@/components/BlurCircles";
 import VerifyWorldId from "@/components/VerifyWorldId";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
@@ -14,6 +15,7 @@ export default function VerifyPage() {
         <FaArrowLeft className="mr-2" />
         Back
       </Button>
+      <BlurCircles />
     </div>
   );
 }

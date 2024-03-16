@@ -5,8 +5,10 @@ import {
   ISuccessResult,
 } from "@worldcoin/idkit";
 import { Button } from "./ui/button";
+import { useRouter } from "next/navigation";
 
 export default function VerifyWorldId() {
+  const router = useRouter();
   const handleVerify = async (proof: ISuccessResult) => {
     console.log(proof, "proof");
     const res = await fetch("/api/verify", {
@@ -19,6 +21,12 @@ export default function VerifyWorldId() {
     });
     if (!res.ok) {
       throw new Error("Verification failed."); // IDKit will display the error message to the user in the modal
+    }
+    const data = await res.json();
+    console.log(data, res, "data");
+    if (res.status === 200) {
+      console.log("Verification successful");
+      router.push("/datasets");
     }
   };
 
