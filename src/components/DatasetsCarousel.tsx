@@ -15,6 +15,7 @@ import {
   fetchDatasetsForMarketplace,
 } from "@/services/datasets";
 import MarketplaceSet from "@/types/marketplaceSet";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function DatasetsCarousel() {
   const [datasets, setDatasets] = useState([]);
@@ -34,6 +35,13 @@ export function DatasetsCarousel() {
       }}
       className="w-[75vw] ml-10"
     >
+      {datasets.length === 0 ? (
+        <CarouselContent>
+          <Skeleton className="min-w-[300px] max-w-[300px]" />
+          <Skeleton className="min-w-[300px] max-w-[300px]" />
+          <Skeleton className="min-w-[300px] max-w-[300px]" />
+        </CarouselContent>
+      ) : null}
       <CarouselContent>
         {datasets.map((dataset: MarketplaceSet) => (
           <DataCard props={dataset} type="labeller" />
