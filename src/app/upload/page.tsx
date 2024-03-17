@@ -48,32 +48,45 @@ export default function UploadDataset() {
   };
 
   return (
-    <div className="p-10 flex justify-center items-start flex-col min-w-[400px]">
+    <div className="px-10 flex justify-center items-start flex-col min-w-[400px]">
       <Hero />
       <ConnectWallet />
-      <h1 className="mb-3 mt-20">Upload Dataset</h1>
-      <Input
-        type="text"
-        placeholder="Enter dataset name"
-        className="mt-4 w-[400px]"
-        ref={nameRef}
-      />
-      <Input
-        type="number"
-        placeholder="Enter price(optional)"
-        className="my-4 w-[400px]"
-        ref={priceRef}
-      />
-      <Input
-        type="text"
-        placeholder="Enter labels csv"
-        className="my-4 w-[400px]"
-        ref={labelsCsvRef}
-      />
-      <DragAndDrop />
-      <Button className="mt-4 w-[400px]" onClick={handleUploadDataset}>
-        Upload
-      </Button>
+      <h1 className="mb-3 mt-[100px]">Upload Dataset</h1>
+      <div className="flex flex-row-reverse justify-between items-start w-90 mt-5">
+        <div className="flex flex-col items-start justify-between w-[30%] h-[66vh]  border-l-1 border-gray-600 px-1">
+          <div className="flex flex-col items-start justify-start h-[50vh]  border-l-1 border-gray-600 px-1">
+            <Input
+              type="text"
+              placeholder="Enter dataset name"
+              className="mt-4 w-[400px]"
+              ref={nameRef}
+            />
+            <Input
+              type="number"
+              placeholder="Enter price(optional)"
+              className="mt-4 w-[400px]"
+              ref={priceRef}
+            />
+            <Input
+              type="text"
+              placeholder="Enter labels csv"
+              className="mt-4 w-[400px]"
+              ref={labelsCsvRef}
+            />
+          </div>
+          <div className="flex flex-col items-start justify-between h-[15vh]">
+            <Button className="mt-4 w-[400px]" onClick={handleUploadDataset}>
+              Upload
+            </Button>
+            <Button className="mt-4 w-[400px]" variant="outline">
+              Cancel
+            </Button>
+          </div>
+        </div>
+        <div className="w-[70%] flex items-center justify-start">
+          <DragAndDrop />
+        </div>
+      </div>
     </div>
   );
 }

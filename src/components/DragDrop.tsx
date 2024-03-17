@@ -79,13 +79,13 @@ export default function DragAndDrop() {
     inputRef.current.click();
   }
   return (
-    <div className="flex flex-col items-start justify-start min-h-[200px] min-w-[500px]">
+    <div className="flex flex-col items-start justify-start h-[400px] w-[750px]">
       <form
         className={`${
           dragActive
             ? "bg-gray-400 border-2 border-dashed border-black-2"
             : "bg-gray-100 border-2 border-dashed border-black-2"
-        }  p-4 w-100 rounded-lg  min-h-[10rem] text-center flex flex-col items-center justify-center`}
+        }  p-4 min-w-[750px] rounded-lg  min-h-[30rem] text-center flex flex-col items-center justify-center`}
         onDragEnter={handleDragEnter}
         onSubmit={(e) => e.preventDefault()}
         onDrop={handleDrop}
