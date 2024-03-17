@@ -18,7 +18,10 @@ export const fetchDatasetsForMarketplace = async () => {
 
 export const fetchRecordToAnnotate = async (paramsObj: any) => {
   const res = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/dataset/annotate`
+    `${process.env.NEXT_PUBLIC_API_URL}/dataset/annotate`,
+    {
+      params: paramsObj,
+    }
   );
   return res;
 };

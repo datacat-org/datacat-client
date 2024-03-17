@@ -21,11 +21,15 @@ export default function DatasetPage(props: any) {
   const [record, setRecord] = useState({});
 
   const handleFetchDataRecord = async () => {
+    console.log("Fetching record", dataId, id);
     const res = await fetchRecordToAnnotate({
       dataset_id: dataId,
       annotator_id: id,
     });
     console.log("res from fetchRecordToAnnotate", res);
+    if (res.status === 200) {
+      setRecord(res.data.data);
+    }
   };
 
   const handleReviewRecord = async () => {
@@ -87,7 +91,10 @@ export default function DatasetPage(props: any) {
             </div>
           </div>
           <div className="w-[70%] flex items-center justify-start">
-            <iframe src="/a.pdf" className="h-[650px] w-[900px] rounded-sm" />
+            <iframe
+              src={`https://gateway.lighthouse.storage/ipfs/${record.cid}`}
+              className="h-[650px] w-[900px] rounded-sm"
+            />
           </div>
         </div>
       </div>
