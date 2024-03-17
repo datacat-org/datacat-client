@@ -11,9 +11,12 @@ import { DatasetsCarousel } from "@/components/DatasetsCarousel";
 import { Button } from "@/components/ui/button";
 import { fetchCircleWalletBalance } from "@/services/circle";
 import { useUserStore } from "@/states/userStore";
+import { FaArrowRight } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 export default function DashboardPage() {
   const id = useUserStore((state: any) => state.id);
+  const router = useRouter();
 
   const handleFetchCircleWalletBalance = async () => {
     try {
@@ -32,10 +35,19 @@ export default function DashboardPage() {
       <Hero />
       <ConnectWallet />
       <div className="flex flex-col justify-around items-start mt-[100px] px-10 h-full">
+        <div className="my-5 text-3xl font-bold">Portfolio</div>
         <PortfolioCard />
+        <div className="my-5 text-3xl font-bold">Explore</div>
         <DatasetsCarousel />
-        <Button variant={"link"} className="mt-4">
-          <Link href="/datasets">View more datasets</Link>
+        <Button
+          variant={"link"}
+          className="mt-4"
+          onClick={() => {
+            router.push("/datasets");
+          }}
+        >
+          View more
+          <FaArrowRight className="ml-2" size={"20px"} />
         </Button>
       </div>
     </div>

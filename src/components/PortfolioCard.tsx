@@ -25,25 +25,40 @@ import { fetchCircleWalletBalance } from "@/services/circle";
 export default function PortfolioCard() {
   return (
     <>
-      <Card className="min-w-[450px] h-fit pt-3 rounded-none">
+      <Card className="min-w-[80vw] h-fit pt-3 rounded-none">
         <CardContent className="w-100 my-2">
           <StatGroup className="flex w-100 justify-around items-center">
-            <Stat>
+            <Stat className="mr-5">
               <StatLabel className="mb-2">Rewards Earned</StatLabel>
-              <StatNumber>345,670</StatNumber>
+              <StatNumber>
+                100 <span className="font-sm">catCoins</span>
+              </StatNumber>
               <StatHelpText>
                 <StatArrow type="increase" />
-                23.36%
+                10%
               </StatHelpText>
             </Stat>
 
             <Stat>
               <StatLabel className="mb-2">Labels</StatLabel>
-              <StatNumber>45</StatNumber>
+              <StatNumber>6</StatNumber>
               <StatHelpText>
                 <StatArrow type="increase" />
-                9.05%
+                5%
               </StatHelpText>
+            </Stat>
+
+            <Stat>
+              <StatLabel className="mb-2">Circle USDC Balance</StatLabel>
+              <StatNumber>$50</StatNumber>
+            </Stat>
+            <Stat>
+              <StatLabel className="mb-2">Staked USDC</StatLabel>
+              <StatNumber>$150</StatNumber>
+            </Stat>
+            <Stat>
+              <StatLabel className="mb-2">Tier</StatLabel>
+              <StatNumber>GOLD</StatNumber>
             </Stat>
           </StatGroup>
         </CardContent>
