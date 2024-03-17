@@ -18,7 +18,7 @@ export default function DatasetPage(props: any) {
   const toast = useToast();
   const router = useRouter();
 
-  const [record, setRecord] = useState({});
+  const [record, setRecord] = useState<any>({});
 
   const handleFetchDataRecord = async () => {
     console.log("Fetching record", dataId, id);
