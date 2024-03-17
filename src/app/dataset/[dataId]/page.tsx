@@ -22,8 +22,8 @@ export default function DatasetPage(props: any) {
 
   const handleFetchDataRecord = async () => {
     const res = await fetchRecordToAnnotate({
-      dataset_id: id,
-      annotator_id: dataId,
+      dataset_id: dataId,
+      annotator_id: id,
     });
     console.log("res from fetchRecordToAnnotate", res);
   };

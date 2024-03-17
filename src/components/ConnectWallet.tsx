@@ -18,7 +18,7 @@ export default function ConnectWallet() {
     (state: any) => state.setCircleWalletAddress
   );
 
-  const { user } = useDynamicContext();
+  const { user, setShowAuthFlow } = useDynamicContext();
 
   const handleCreateUser = async (addr: any) => {
     const checkRes = await checkIfUserExists({ address: addr });
@@ -42,6 +42,12 @@ export default function ConnectWallet() {
       handleCreateUser(user.verifiedCredentials[0].address);
     }
   }, [user]);
+
+  useEffect(() => {
+    if (!user) {
+      setShowAuthFlow(true);
+    }
+  }, []);
 
   return (
     <div className="fixed top-5 right-10">
