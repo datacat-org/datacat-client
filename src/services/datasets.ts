@@ -54,3 +54,11 @@ export const addLabeledData = async (body: any) => {
   );
   return res;
 };
+
+export const addressFromId = async (id: string) => {
+  const res = await axios.get(
+    `${process.env.NEXT_PUBLIC_API_URL}/dataset/contract/${id}`
+  );
+  console.log("res from addressFromId", res.data);
+  return res;
+};

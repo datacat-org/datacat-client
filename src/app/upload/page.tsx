@@ -5,10 +5,13 @@ import DragAndDrop from "@/components/DragDrop";
 import Hero from "@/components/Hero";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { createDataset } from "@/services/datasets";
+import { addressFromId, createDataset } from "@/services/datasets";
 import { useFilesStore } from "@/states/filesStore";
 import { useToast } from "@chakra-ui/toast";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { getAccount, publicClient, walletClient } from "@/lib/config";
+import transferABI from "@/lib/abis/transfer.json";
+import { Address } from "viem";
 
 export default function UploadDataset() {
   const filesArray = useFilesStore((state: any) => state.filesArray);
@@ -16,6 +19,8 @@ export default function UploadDataset() {
   const priceRef = useRef<HTMLInputElement>(null);
   const labelsCsvRef = useRef<HTMLInputElement>(null);
   const toast = useToast();
+  const [loader, setLoader] = useState(false);
+  const [contractAddress, setContractAddress] = useState("");
 
   const handleUploadDataset = async () => {
     //convert files array to form data
@@ -31,6 +36,34 @@ export default function UploadDataset() {
 
     console.log("res from upload dataset", res);
     if (res.status === 200) {
+      const contractId = res.data.data.contractId;
+
+      setLoader(true);
+      const getAddressInterval = setInterval(async () => {
+        console.log("checking every 5 seconds");
+        const addr = await addressFromId(contractId);
+        if (addr.data.data) {
+          setContractAddress(addr.data.data);
+          clearInterval(getAddressInterval);
+          setLoader(false);
+        }
+      }, 5000);
+
+      console.log("contract address", contractAddress);
+
+      const account = await getAccount();
+
+      const { request } = await publicClient.simulateContract({
+        address: contractAddress as Address,
+        abi: transferABI,
+        functionName: "mint",
+        args: [69420],
+        account,
+      });
+      const hash = await walletClient.writeContract(request);
+
+      console.log("hash", hash);
+
       toast({
         title: "Dataset uploaded",
         status: "success",
