@@ -11,7 +11,7 @@ import { useToast } from "@chakra-ui/toast";
 import { useRef, useState } from "react";
 import { getAccount, publicClient, walletClient } from "@/lib/config";
 import transferABI from "@/lib/abis/transfer.json";
-import { Address } from "viem";
+import { Address, parseUnits } from "viem";
 
 export default function UploadDataset() {
   const filesArray = useFilesStore((state: any) => state.filesArray);
@@ -39,30 +39,33 @@ export default function UploadDataset() {
       const contractId = res.data.data.contractId;
 
       setLoader(true);
+
+      console.log("contract address", contractAddress);
+      const account = await getAccount();
+
       const getAddressInterval = setInterval(async () => {
         console.log("checking every 5 seconds");
         const addr = await addressFromId(contractId);
         if (addr.data.data) {
           setContractAddress(addr.data.data);
+          console.log(
+            "contract address recieved, clearing interval",
+            addr.data.data
+          );
           clearInterval(getAddressInterval);
+          const { request } = await publicClient.simulateContract({
+            address: addr.data.data as Address,
+            abi: transferABI,
+            functionName: "receiveUSDT",
+            args: [parseUnits(priceRef.current!.value, 6)],
+            account,
+          });
+          const hash = await walletClient.writeContract(request);
+
+          console.log("hash", hash);
           setLoader(false);
         }
       }, 5000);
-
-      console.log("contract address", contractAddress);
-
-      const account = await getAccount();
-
-      const { request } = await publicClient.simulateContract({
-        address: contractAddress as Address,
-        abi: transferABI,
-        functionName: "mint",
-        args: [69420],
-        account,
-      });
-      const hash = await walletClient.writeContract(request);
-
-      console.log("hash", hash);
 
       toast({
         title: "Dataset uploaded",

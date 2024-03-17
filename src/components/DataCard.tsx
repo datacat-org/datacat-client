@@ -32,6 +32,12 @@ import { useDynamicContext } from "@/lib/dynamic";
 import { useToast } from "@chakra-ui/react";
 import { buyDataset } from "@/services/consumers";
 import MarketplaceSet from "@/types/marketplaceSet";
+import { publicClient, walletClient } from "@/lib/config";
+import usdcAbi from "@/lib/abis/usdc_abi.json";
+import transferABI from "@/lib/abis/transfer.json";
+import { Address, parseUnits } from "viem";
+import { useEffect, useState } from "react";
+import { addressFromId } from "@/services/datasets";
 
 interface DataCardProps {
   type: string;
@@ -42,6 +48,21 @@ export default function DataCard({ type, props }: DataCardProps) {
   const router = useRouter();
   const { user } = useDynamicContext();
   const toast = useToast();
+  const [caddress, setCaddress] = useState("");
+
+  useEffect(() => {
+    handleFetchAddress();
+  }, []);
+
+  const handleFetchAddress = async () => {
+    console.log("Fetching address", props.contractId);
+    const addr = await addressFromId(props.contractId);
+    console.log("addr in datacard", addr.data.data);
+    if (addr.status === 200) {
+      setCaddress(addr.data.data);
+    }
+  };
+
   const handleBuyDataset = async () => {
     if (user) {
       console.log("Buying dataset");
@@ -49,8 +70,41 @@ export default function DataCard({ type, props }: DataCardProps) {
         dataset_id: props._id,
         wallet_address: user.verifiedCredentials[0].address,
       });
+      const addr = user.verifiedCredentials[0].address;
       console.log("res from buy dataset", res);
-      
+      if (res.status === 200) {
+        try {
+          const { request: r1 } = await publicClient!.simulateContract({
+            address: "0xc64D44204d5c2109833e54311744a48dF7EB964D" as Address,
+            abi: usdcAbi,
+            functionName: "approve",
+            args: [caddress, parseUnits("100000", 6)],
+            account: addr as Address,
+          });
+          const hash1 = await walletClient.writeContract(r1);
+          console.log("hash1", hash1);
+
+          const { request: r2 } = await publicClient!.simulateContract({
+            address: caddress as Address,
+            abi: transferABI,
+            functionName: "buy",
+            args: [parseUnits(props.price.toString(), 6)],
+            account: addr as Address,
+          });
+          const hash2 = await walletClient.writeContract(r2);
+          console.log("hash2", hash2);
+          if (hash2) {
+            toast({
+              title: "Dataset bought",
+              status: "success",
+              duration: 3000,
+              isClosable: true,
+            });
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      }
     } else {
       toast({
         title: "Please connect your wallet",

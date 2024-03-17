@@ -8,4 +8,5 @@ export default interface MarketplaceSet {
   status: string;
   createdAt: string;
   updatedAt: string;
+  contractId: string;
 }
