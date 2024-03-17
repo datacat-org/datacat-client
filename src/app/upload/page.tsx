@@ -12,6 +12,7 @@ import { useRef, useState } from "react";
 import { getAccount, publicClient, walletClient } from "@/lib/config";
 import transferABI from "@/lib/abis/transfer.json";
 import { Address, parseUnits } from "viem";
+import usdcAbi from "@/lib/abis/usdc_abi.json";
 
 export default function UploadDataset() {
   const filesArray = useFilesStore((state: any) => state.filesArray);
@@ -53,14 +54,25 @@ export default function UploadDataset() {
             addr.data.data
           );
           clearInterval(getAddressInterval);
-          const { request } = await publicClient.simulateContract({
+
+          const { request: r1 } = await publicClient!.simulateContract({
+            address: "0xc64D44204d5c2109833e54311744a48dF7EB964D" as Address,
+            abi: usdcAbi,
+            functionName: "approve",
+            args: [addr.data.data, parseUnits("100000", 6)],
+            account: account as Address,
+          });
+          const hash1 = await walletClient.writeContract(r1);
+          console.log("hash1", hash1);
+
+          const { request: r2 } = await publicClient.simulateContract({
             address: addr.data.data as Address,
             abi: transferABI,
             functionName: "receiveUSDT",
             args: [parseUnits(priceRef.current!.value, 6)],
             account,
           });
-          const hash = await walletClient.writeContract(request);
+          const hash = await walletClient.writeContract(r2);
 
           console.log("hash", hash);
           setLoader(false);

@@ -16,7 +16,7 @@ export const publicClient = createPublicClient({
 
 export const walletClient = createWalletClient({
   chain: polygonMumbai,
-  transport: custom(window.ethereum),
+  transport: http(),
 });
 
 // // JSON-RPC Account
