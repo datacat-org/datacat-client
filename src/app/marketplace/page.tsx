@@ -9,6 +9,23 @@ import { useEffect, useState } from "react";
 import MarketplaceSet from "@/types/marketplaceSet";
 import { FaPlus } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function MarketplacePage() {
   const router = useRouter();
@@ -28,20 +45,30 @@ export default function MarketplacePage() {
       <ConnectWallet />
       <h1 className="mt-[50px] font-xl font-bold">Marketplace</h1>
       <div className="w-screen flex flex-wrap h-100 justify-start items-start">
-        {datasets.map((dataset: MarketplaceSet) => (
-          <DataCard key={dataset._id} props={dataset} type="buyer" />
-        ))}
+        {datasets.map((dataset: MarketplaceSet, index: number) => {
+          if (index === datasets.length - 1) {
+            return (
+              <>
+                <DataCard key={dataset._id} props={dataset} type="buyer" />
+                <Card className="w-[300px] h-[190px] my-5 mr-4 bg-transparent rounded-none flex flex-col items-center justify-around">
+                  <FaPlus size={"60px"} accentHeight={"10px"} />
+                  <h1>
+                    <Button
+                      variant="default"
+                      onClick={() => {
+                        router.push("/upload");
+                      }}
+                    >
+                      Upload Dataset
+                    </Button>
+                  </h1>
+                </Card>
+              </>
+            );
+          }
+          return <DataCard key={dataset._id} props={dataset} type="buyer" />;
+        })}
       </div>
-      <Button
-        variant="default"
-        className="fixed bottom-10 right-10"
-        onClick={() => {
-          router.push("/upload");
-        }}
-      >
-        Upload Dataset&nbsp;
-        <FaPlus />
-      </Button>
     </div>
   );
 }
