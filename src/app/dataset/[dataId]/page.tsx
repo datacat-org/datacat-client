@@ -1,31 +1,50 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import Hero from "@/components/Hero";
 import ConnectWallet from "@/components/ConnectWallet";
 import { fetchRecordToAnnotate, reviewRecord } from "@/services/datasets";
+import { useUserStore } from "@/states/userStore";
+import { useToast } from "@chakra-ui/toast";
+import { Router } from "next/router";
 
 export default function DatasetPage(props: any) {
-  const { id } = useParams();
+  const { dataId } = useParams();
+  const id = useUserStore((state: any) => state.id);
   const [score, setScore] = useState(5);
+  const toast = useToast();
+  const router = useRouter();
 
   const [record, setRecord] = useState({});
 
   const handleFetchDataRecord = async () => {
     const res = await fetchRecordToAnnotate({
-      dataset_id: "65f5f7f2a207075853c36dce",
-      annotator_id: "65f4f7b09ac3763d57b97702",
+      dataset_id: id,
+      annotator_id: dataId,
     });
     console.log("res from fetchRecordToAnnotate", res);
   };
 
   const handleReviewRecord = async () => {
     console.log("Reviewing record");
-    const res = await reviewRecord({});
+    const res = await reviewRecord({
+      user_id: id,
+      data_id: dataId,
+      grade: score,
+    });
     console.log("res from reviewRecord", res);
+    if (res.status === 200) {
+      toast({
+        title: "Record reviewed",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+      router.push("/datasets");
+    }
   };
 
   useEffect(() => {

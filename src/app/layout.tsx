@@ -5,6 +5,8 @@ import "./globals.css";
 import { DynamicContextProvider } from "@dynamic-labs/sdk-react";
 import { EthereumWalletConnectors } from "@dynamic-labs/ethereum";
 import { ChakraProvider } from "@chakra-ui/react";
+import { WagmiProvider } from "wagmi";
+import { config } from "@/lib/config";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,15 +26,17 @@ export default function RootLayout({
         ></link>
       </head>
       <body className={inter.className}>
-        <ChakraProvider>
-          <DynamicContextProvider
-            settings={{
-              environmentId: process.env.NEXT_PUBLIC_DYNAMIC_ENVIRONMENT_ID!,
-            }}
-          >
-            {children}
-          </DynamicContextProvider>
-        </ChakraProvider>
+        <WagmiProvider config={config}>
+          <ChakraProvider>
+            <DynamicContextProvider
+              settings={{
+                environmentId: process.env.NEXT_PUBLIC_DYNAMIC_ENVIRONMENT_ID!,
+              }}
+            >
+              {children}
+            </DynamicContextProvider>
+          </ChakraProvider>
+        </WagmiProvider>
       </body>
     </html>
   );
