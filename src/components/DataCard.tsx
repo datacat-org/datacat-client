@@ -46,10 +46,11 @@ export default function DataCard({ type, props }: DataCardProps) {
     if (user) {
       console.log("Buying dataset");
       const res = await buyDataset({
-        dataset_id: 141,
+        dataset_id: props._id,
         wallet_address: user.verifiedCredentials[0].address,
       });
       console.log("res from buy dataset", res);
+      
     } else {
       toast({
         title: "Please connect your wallet",

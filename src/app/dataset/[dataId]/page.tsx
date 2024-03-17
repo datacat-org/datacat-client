@@ -36,7 +36,7 @@ export default function DatasetPage(props: any) {
     console.log("Reviewing record");
     const res = await reviewRecord({
       user_id: id,
-      data_id: dataId,
+      data_id: record._id,
       grade: score,
     });
     console.log("res from reviewRecord", res);
