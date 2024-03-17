@@ -14,6 +14,9 @@ export default function ConnectWallet() {
   const walletAddress = useWalletStore((state: any) => state.walletAddress);
   const userType = useUserStore((state: any) => state.userType);
   const setId = useUserStore((state: any) => state.setId);
+  const setCircleWalletAddress = useWalletStore(
+    (state: any) => state.setCircleWalletAddress
+  );
 
   const { user } = useDynamicContext();
 
@@ -23,7 +26,7 @@ export default function ConnectWallet() {
     if (checkRes.data.data._id) {
       console.log("User exists", checkRes.data.data._id);
       setId(checkRes.data.data._id);
-
+      setCircleWalletAddress(checkRes.data.data.circle_wallet_address);
       return;
     }
 

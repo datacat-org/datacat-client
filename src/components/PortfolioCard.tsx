@@ -1,4 +1,5 @@
-import * as React from "react";
+"use client";
+import React, { useEffect } from "react";
 
 import {
   Card,
@@ -9,8 +10,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-
-
 import {
   Stat,
   StatLabel,
@@ -19,6 +18,9 @@ import {
   StatArrow,
   StatGroup,
 } from "@chakra-ui/react";
+import { useWalletStore } from "@/states/walletStore";
+import { useUserStore } from "@/states/userStore";
+import { fetchCircleWalletBalance } from "@/services/circle";
 
 export default function PortfolioCard() {
   return (
